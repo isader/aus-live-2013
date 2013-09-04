@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-au" lang="en-au">
+	<head>
+		<meta name = "viewport" content = "initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+		<title>QLD Elections Live Feed</title>
+		<!-- styles network -->
+		<link rel="stylesheet" media="screen" type="text/css" href="http://media.news.com.au/fe/tmp/news-network/news-network.css">
+		<link rel="stylesheet" media="screen" type="text/css" href="http://resources2.news.com.au/cs/australian/paid/css/includes-concat-min.css">
+		<link rel="stylesheet" media="screen" type="text/css" href="http://resources2.news.com.au/cs/australian/paid/css/top-includes-concat-min.css">
+		<link rel="stylesheet" media="screen" type="text/css" href="http://media.theaustralian.com.au/fe/hotfixes/css/launch-styles.css">
+		<!-- stylesheets -->
+		
+		<link rel="stylesheet" media="screen" type="text/css" href="css/min_styles.css" />
+		
+		<!-- JS Network  -->
+		<script src="http://resources1.news.com.au/cs/network/js/library/network-3rdpartylibs-concat-min.js"></script>
+		<!-- JS ThirdParty -->
+	
+		<!-- JS custom -->
+		<!-- views -->
+		<script src="js/qldLive/MinBar.js"></script>
+		<!-- utils -->
+		<script src="js/qldLive/utils/extensitions.js"></script>
+		<script src="js/qldLive/utils/DataAPILoader.js"></script>
+		<!-- mvc -->
+		<script src="js/qldLive/Model.js"></script>
+		
+	
+	</head>
+	<body style="background: none;">
+		<div id='qldElectionsMinLive'>
+			<div class="panel">
+				<h1>Queensland State Elections 2012 Live</h1>
+				<div class="parties"></div>
+				<div class="infobar">
+					<h4></h4>
+					<a href="http://www.theaustralian.com.au/national-affairs/elections/state/qld-election-2012">View full results</a>
+				</div>
+			</div>
+		</div>
+		<script>
+			$(document).ready(function() {
+				new ndm.australian.qldlive.MinBar('#qldElectionsMinLive');
+			});
+		</script>
+	</body>
+</html>

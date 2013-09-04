@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-au" lang="en-au">
+	<head>
+		<meta name = "viewport" content = "initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+		<title>QLD Elections Live Feed</title>
+		<!-- styles network -->
+		<link rel="stylesheet" media="screen" type="text/css" href="http://media.news.com.au/fe/tmp/news-network/news-network.css">
+		<link rel="stylesheet" media="screen" type="text/css" href="http://resources2.news.com.au/cs/australian/paid/css/includes-concat-min.css">
+		<link rel="stylesheet" media="screen" type="text/css" href="http://resources2.news.com.au/cs/australian/paid/css/top-includes-concat-min.css">
+		<link rel="stylesheet" media="screen" type="text/css" href="http://media.theaustralian.com.au/fe/hotfixes/css/launch-styles.css">
+		<!-- stylesheets -->
+		<link rel="stylesheet" media="screen" type="text/css" href="css/jquery.jscrollpane.css" />
+		<link rel="stylesheet" media="screen" type="text/css" href="css/styles.css" />
+		<link rel="stylesheet" media="screen" type="text/css" href="css/jquery.autocomplete.css">
+		<!-- JS Network  -->
+		<script src="http://resources1.news.com.au/cs/network/js/library/network-3rdpartylibs-concat-min.js"></script>
+		<!-- JS ThirdParty -->
+		<script src="js/thirdparty/jquery.jscrollpane.min.js"></script>
+		<script src="js/thirdparty/jquery.mousewheel.js"></script>
+		<script src="js/thirdparty/jquery.xml2json.js"></script>
+		<script src="js/thirdparty/jquery.autocomplete.min.js"></script>
+		<!-- JS custom -->
+		<script src="js/qldLive/QLDLive.js"></script>
+		<!-- utils -->
+		<script src="js/qldLive/utils/EventTarget.js"></script>
+		<script src="js/qldLive/utils/extensitions.js"></script>
+		<script src="js/qldLive/utils/DataAPILoader.js"></script>
+		<!-- displays -->
+		<script src="js/qldLive/displays/ResultsBar.js"></script>
+		<script src="js/qldLive/displays/SeatDetails.js"></script>
+		<script src="js/qldLive/displays/Details.js"></script>
+		<script src="js/qldLive/displays/LiveUpdates.js"></script>
+		<script src="js/qldLive/displays/Overview.js"></script>
+		<script src="js/qldLive/displays/YourSeat.js"></script>
+		<script src="js/qldLive/displays/ElectoratesTable.js"></script>
+		<!-- mvc -->
+		<script src="js/qldLive/Model.js"></script>
+		<script src="js/qldLive/Controller.js"></script>
+		<!-- views -->
+		<script src="js/qldLive/View.js"></script>
+		<script src="js/qldLive/views/Latest.js"></script>
+		<script src="js/qldLive/views/Electorates.js"></script>
+		<script src="js/qldLive/views/LiveVideo.js"></script>
+		
+	</head>
+	<body>
+		<div id='qldElectionsLive'>
+			<h1>Queensland State Elections 2012 Live</h1>
+			<div class="loader"><img src="img/aus-spinner.gif" /></div>
+		</div>		
+	</body>
+	<script>
+		new ndm.australian.qldlive.QLDLive('#qldElectionsLive');
+	</script>
+</html>

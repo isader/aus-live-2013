@@ -1,0 +1,24 @@
+#qldElectionsMinLive {margin:0 0 10px 0; color: #fff;  background: #fff; border-top:1px solid #dfdfd2;  border-bottom:1px solid #dfdfd2; padding: 5px 0 5px 0; width:650px}
+#qldElectionsMinLive .panel {background:#03415c url('../img/min_bg.png') no-repeat; padding: 55px 80px 0 80px; width:490px; *width:650px; height:95px;*height:150px; position: relative; }
+#qldElectionsMinLive h1 {display: none;}
+
+
+#qldElectionsMinLive .parties {}
+#qldElectionsMinLive .parties h3 {color: #fff; font-size: 20px; float: left;}
+#qldElectionsMinLive .parties .party {margin:0; float: left; width:49%;}
+#qldElectionsMinLive .parties .party img {float:left; margin: 0 10px 0 0; width:48px;}
+#qldElectionsMinLive .ALP { }
+#qldElectionsMinLive .ALP h3 {float:left; width:150px}
+#qldElectionsMinLive .LNP { text-align: right;}
+#qldElectionsMinLive .LNP h3 {float:right;}
+#qldElectionsMinLive .partyBar {float:left; width:100px; height:20px; background: #ef5b46; margin: 0px;position: absolute;top: 80px; left: 80px;-webkit-box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);
+-moz-box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);
+box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);}
+#qldElectionsMinLive .partyBar.LNP {margin: 0; background:#146eaf; left:325px}
+
+#qldElectionsMinLive .infobar {position: absolute;top: 118px; left: 80px; width:490px;}
+#qldElectionsMinLive .infobar  h4 {text-transform: uppercase; font-size: 14px; margin: 5px 0 0 0; width:300px; float: left; font-family: 'Times New Roman',serif; font-weight: bold;}
+#qldElectionsMinLive .infobar a {font-size: 11px;float:right; display: block; cursor:pointer; text-align: center;color:#fff; background: #277f9c; padding: 6px 15px; -webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px; text-transform: uppercase; font-weight: normal;}
+#qldElectionsMinLive .infobar a:hover {text-decoration: none; background: #2d9ec4;}
+
+/**  */

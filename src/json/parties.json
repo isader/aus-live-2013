@@ -1,0 +1,64 @@
+{
+    "query": {
+        "count": 1,
+        "created": "2013-08-28T11:34:46Z",
+        "lang": "en-US",
+        "results": {
+            "election": {
+                "parties": {
+                    "party": [{
+                        "code": "LNP",
+                        "name": "LNP",
+                        "formalVotes": {
+                            "percentage": "49.65",
+                            "count": "1214311"
+                        }
+                    }, {
+                        "code": "ALP",
+                        "name": "Australian Labor Party",
+                        "formalVotes": {
+                            "percentage": "26.66",
+                            "count": "652042"
+                        }
+                    }, {
+                        "code": "KAP",
+                        "name": "The Australian Party",
+                        "formalVotes": {
+                            "percentage": "11.53",
+                            "count": "282064"
+                        }
+                    }, {
+                        "code": "GRN",
+                        "name": "The Greens",
+                        "formalVotes": {
+                            "percentage": "7.53",
+                            "count": "184140"
+                        }
+                    }, {
+                        "code": "FFP",
+                        "name": "Family First Party",
+                        "formalVotes": {
+                            "percentage": "1.36",
+                            "count": "33263"
+                        }
+                    }, {
+                        "code": "ONP",
+                        "name": "One Nation",
+                        "formalVotes": {
+                            "percentage": "0.10",
+                            "count": "2525"
+                        }
+                    }, {
+                        "code": "ZZZ",
+                        "name": "Other Candidates",
+                        "formalVotes": {
+                            "percentage": "3.16",
+                            "count": "77249"
+                        }
+                    }]
+                },
+                "generationDateTime": "2012-05-08T06:01:42"
+            }
+        }
+    }
+}

@@ -1,0 +1,63 @@
+/**************************************
+ * Displays and show the details view
+ @param $domId the HTML element to create the application in
+ ************************************/
+ndm.australian.qldlive.displays.Details = function($domId) {
+
+	this.domId = $domId;
+	this.model = new ndm.australian.qldlive.Model();
+	// Add Loading
+	$(this.domId).html('<img src="'+this.model.assetsURL+'img/ajax-loader.gif"  class="loadingAni"/>');
+	
+	// Listen
+	var selfRef = this;
+	$(this.model).bind(this.model.PARTIES_LOADED, function($event, $data) {
+		selfRef.build();
+	});
+	this.model.requestParties();
+}
+
+ndm.australian.qldlive.displays.Details.prototype.open = function() {
+}
+ndm.australian.qldlive.displays.Details.prototype.close = function() {
+}
+
+ndm.australian.qldlive.displays.Details.prototype.destroy = function() {
+	$(this.model).unbind(this.model.ELECTION_RESULTS_LOADED, function($event, $data) {
+		//selfRef.build();
+	});
+}
+/**
+ * Build
+ */
+ndm.australian.qldlive.displays.Details.prototype.build = function() {
+	//var updatedDateStr = this.model.results.generationDateTime;
+	//var date = updatedDateStr.split('T')[0].split('-');
+	//var time = updatedDateStr.split('T')[1].split(':');;
+	//var updatedDate = new Date(date[0],date[1],date[2],time[0],time[1],time[2])
+	//var dateDifference = dateExt.dateDiiference(updatedDate, new Date());
+	var output = '<h2>DETAILS</h2>'; //<h3><b>' + this.model.results.percentRollCounted + '% counted </b>| Last update '+dateDifference.minutesFull+' mins ago</h3>';
+	output += '<table><thead><tr><th>Party</th><th>% Vote</th><th class="highlight" style="width:110px"></th><th>Seats Won 2009</th><th class="highlight">Seats Called 2012</th></tr></thead>';
+ 	var parties = this.model.parties;
+	for(var i in parties) {
+		var rowClass = '';
+		if(i == parties.length-1) {
+			rowClass = 'last'
+		}
+		var party = parties[i];
+		
+	
+		var width = Math.abs(party.percentage)* (70/100)
+		
+		
+		output += '<tr class="' + rowClass + '"><td><b>' + party.name + '</b></td><td><b>'+party.percentage+'%</b></td><td class="highlight"><div class="swingbar" style="background:'+party.colour+'; width:'+width+'px;"></div></td><td>'+party.won2009+'</td><td  class="highlight"><b>'+party.won2012+'</b></td></tr>';
+	};
+	output += '</table>';
+	output += '<a href="javascript:" class="btn" id="allLink">View Detailed Results for all electorates</a>';
+	$(this.domId).html(output);
+	// events
+	var selfRef = this;
+	$(this.domId + ' #allLink').click(function(){
+		$(selfRef).trigger('switchView','electorates');
+	});
+}

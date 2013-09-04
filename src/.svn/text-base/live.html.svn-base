@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-au" lang="en-au">
+	<head>
+		<meta name = "viewport" content = "initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+		<title>QLD Elections Live Feed</title>
+		<!-- styles network -->
+		<link rel="stylesheet" media="screen" type="text/css" href="http://media.news.com.au/fe/tmp/news-network/news-network.css">
+		<link rel="stylesheet" media="screen" type="text/css" href="http://resources2.news.com.au/cs/australian/paid/css/includes-concat-min.css">
+		<link rel="stylesheet" media="screen" type="text/css" href="http://resources2.news.com.au/cs/australian/paid/css/top-includes-concat-min.css">
+		<link rel="stylesheet" media="screen" type="text/css" href="http://media.theaustralian.com.au/fe/hotfixes/css/launch-styles.css">
+		<!-- stylesheets -->
+		<link rel="stylesheet" media="screen" type="text/css" href="css/jquery.jscrollpane.css" />
+		<link rel="stylesheet" media="screen" type="text/css" href="css/styles.css" />
+		<link rel="stylesheet" media="screen" type="text/css" href="css/jquery.autocomplete.css">
+		<!-- JS Network  -->
+		<script src="http://resources1.news.com.au/cs/network/js/library/network-3rdpartylibs-concat-min.js"></script>
+		<!-- JS ThirdParty -->
+		<script src="js/thirdparty.concate.min.js"></script>
+		<!-- JS custom -->
+		<script src="js/qldlive.concate.min.js"></script>
+	</head>
+	<body style="background: none;">
+		<div id='qldElectionsLive'>
+			<h1>Queensland State Elections 2012 Live</h1>
+			<div class="loader"><img src="img/aus-spinner.gif" />
+			</div>
+		</div>
+	</body>
+	<script>
+		$(document).ready(function() {
+			new ndm.australian.qldlive.QLDLive('#qldElectionsLive');
+		});
+
+	</script>
+</html>

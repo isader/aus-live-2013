@@ -1,0 +1,112 @@
+/**************************************
+ * Displays and show the YourSeat view
+ @param $domId the HTML element to create the application in
+ ************************************/
+ndm.australian.qldlive.displays.YourSeat = function($domId) {
+	this.domId = $domId;
+	this.model = new ndm.australian.qldlive.Model();
+	this.searchMessage = 'Electorate, suburb or postcode';
+	// Listen
+	var selfRef = this;
+	$(this.model).bind(this.model.DISTRICTS_LOADED, function($event, $data) {
+		selfRef.build();
+	});
+	this.model.requestDistricts();
+}
+ndm.australian.qldlive.displays.YourSeat.prototype.open = function() {
+}
+ndm.australian.qldlive.displays.YourSeat.prototype.close = function() {
+}
+
+ndm.australian.qldlive.displays.YourSeat.prototype.destroy = function() {
+	$(this.model).unbind(this.model.ELECTION_RESULTS_LOADED, function($event, $data) {
+		selfRef.build();
+	});
+}
+/**
+ * Build
+ */
+ndm.australian.qldlive.displays.YourSeat.prototype.build = function() {
+	$(this.domId).addClass('setInfo');
+	var electorate = cookieExt.readCookie('yourElectorate');
+	if (electorate!=null){
+		this.showElectorate(electorate)
+	} else {
+		this.showAddView();
+	}
+	
+}
+ndm.australian.qldlive.displays.YourSeat.prototype.showAddView = function() {
+	
+	var output = '<h2>ADD YOUR SEAT</h2>';
+	output += '<p>View live results for your electorate</p>';
+	output += '<input type="text" name="elecorateName" id="elecorateName" value="' + this.searchMessage + '"/>';
+	$(this.domId).addClass('add');
+	$(this.domId).html(output);
+	var selfRef = this;
+	this.autoComplete = $(this.domId + ' input').autocomplete(this.model.searchList).result(function(event, item) {
+		var electorate = item[0]
+		//$(this).val(selfRef.searchMessage);
+		selfRef.showElectorate(electorate);
+	});
+	$(this.domId + ' input').focus(function() {
+		if($(this).val() == selfRef.searchMessage) {
+			$(this).val('')
+			$(this).removeClass('message');
+		}
+	});
+	$(this.domId + ' input').blur(function() {
+		if($(this).val() == '') {
+			$(this).val(selfRef.searchMessage)
+			$(this).addClass('message');
+		}
+	});
+}
+/**
+ * Open Electorate
+ */
+ndm.australian.qldlive.displays.YourSeat.prototype.showElectorate = function($electorate) {
+	$(this.domId).removeClass('add');
+	// electorate
+	var electorateData = this.model.findElectorateByName($electorate);
+	if(!electorateData) {
+		if(!isNaN($electorate)) {
+			electorateData = this.model.findElectorateByPostCode($electorate)
+		} else {
+			electorateData = this.model.findElectorateBySuburb($electorate)
+		}
+	}
+	
+	if(electorateData) {
+		//
+		cookieExt.createCookie('yourElectorate',electorateData.name,500);
+		
+		var heldByParty = this.model.parties[electorateData.held_by.toUpperCase()]
+
+		var output = '<a class="close" href="javascript:">close</a><h2>' + electorateData.name + '</h2><h4>Held by : <span style="color:' + heldByParty.colour + '">' + electorateData.held_by + '</span></h4>';
+		var calledFor = electorateData.called_for.toUpperCase();
+		if(calledFor != 'NA' && calledFor != '' && calledFor != null && calledFor.length == 3) {
+			var calledForParty = this.model.parties[calledFor]
+			output += '<h3 class="called">Called for : <span style="color:' + calledForParty.colour + '">' + calledFor + '</span></h3>';
+		}
+		output += '<table><thead><tr><th class="candidate_th">Candidate</th><th class="votes_th">% Votes</th><th class="highlight swing_th">Swing</th></tr></thead><tbody>';
+		for(var i = 0; i < electorateData.candidates.length; i++) {
+			var candidate = electorateData.candidates[i];
+			var rowClass = '';
+			if(i == electorateData.candidates.length - 1) {
+				rowClass = 'last'
+			}
+			var colour = this.model.parties[candidate.party].colour
+			var partyCode = (candidate.party.toUpperCase()=='ZZZ') ? 'IND' : candidate.party;
+			output += '<tr class="' + rowClass + '"><td>' + candidate.ballotName + ' (' + partyCode + ')</td><td class="vote"><div class="votePercent" style="width:' + (candidate.primaryVotes.percentage * 50 / 100)  + 'px; background:' + colour + ';"></div> ' + candidate.primaryVotes.percentage + '%</td><td class="highlight">' + candidate.primaryVotes.percentage + '% </td><tr>';
+		};
+		output += '</tbody></table><h3>Votes Counted: '+electorateData.percentage+'%</h3>';
+		$(this.domId).html(output);
+		// events
+		var selfRef = this;
+		$(this.domId + ' .close').click(function(){
+			selfRef.showAddView();
+		})
+	}
+
+}

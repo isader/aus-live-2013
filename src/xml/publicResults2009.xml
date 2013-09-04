@@ -1,0 +1,89 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<election id="171" name="2009 State General Election" type="H" state="QLD" date="2009-03-21" status="Open" enrolment="2660940" percentRollCounted="90.93" boothCount="2148" candidateCount="397" partyCount="6" xmlUpdateInterval="300">
+	
+	<parties>
+		<party code="ALP" name="Australian Labor Party">
+			<formalVotes>
+				<percentage>
+					42.25
+				</percentage>
+				<count>
+					1002415
+				</count>
+			</formalVotes>
+		</party>
+		<party code="LNP" name="LNP">
+			<formalVotes>
+				<percentage>
+					41.60
+				</percentage>
+				<count>
+					987018
+				</count>
+			</formalVotes>
+		</party>
+		<party code="GRN" name="The Greens">
+			<formalVotes>
+				<percentage>
+					8.37
+				</percentage>
+				<count>
+					198475
+				</count>
+			</formalVotes>
+		</party>
+		<party code="DSQ" name="DS4SEQ">
+			<formalVotes>
+				<percentage>
+					0.93
+				</percentage>
+				<count>
+					22170
+				</count>
+			</formalVotes>
+		</party>
+		<party code="FFP" name="Family First Party">
+			<formalVotes>
+				<percentage>
+					0.82
+				</percentage>
+				<count>
+					19379
+				</count>
+			</formalVotes>
+		</party>
+		<party code="ONP" name="One Nation">
+			<formalVotes>
+				<percentage>
+					0.38
+				</percentage>
+				<count>
+					9038
+				</count>
+			</formalVotes>
+		</party>
+		<party code="ZZZ" name="Other Candidates">
+			<formalVotes>
+				<percentage>
+					5.65
+				</percentage>
+				<count>
+					134156
+				</count>
+			</formalVotes>
+		</party>
+	</parties>
+	
+	<totalBallots>
+		2419559
+	</totalBallots>
+	<totalFormalVotes>
+		2372651
+	</totalFormalVotes>
+	<totalInformalVotes>
+		46908
+	</totalInformalVotes>
+	<totalVotes>
+		2419559
+	</totalVotes>
+</election>

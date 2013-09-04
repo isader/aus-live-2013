@@ -1,0 +1,87 @@
+/**************************************
+ * Displays and show the live updates panel
+ @param $domId the HTML element to create the application in
+ ************************************/
+ndm.australian.qldlive.displays.Overview = function($domId) {
+	this.domId = $domId;
+	this.model = new ndm.australian.qldlive.Model();
+	this.build();
+	//this.update();
+	//$(selfRef).triggerHandler(selfRef.ELECTORATES_LOADED, selfRef.electorates);
+	var selfRef = this;
+	$(this.model).unbind(this.model.SETTINGS_LOADED, true);
+	$(this.model).bind(this.model.SETTINGS_LOADED, function($event, $data) {
+		selfRef.build();
+	});
+	$(this.model).unbind(this.model.ELECTORATES_LOADED, true);
+	$(this.model).bind(this.model.ELECTORATES_LOADED, function($event, $data) {
+		selfRef.build();
+	});
+}
+
+ndm.australian.qldlive.displays.Overview.prototype.open = function() {
+}
+ndm.australian.qldlive.displays.Overview.prototype.close = function() {
+}
+/**
+ * Build the overview panel
+ */
+ndm.australian.qldlive.displays.Overview.prototype.build = function() {
+	var output = '<div class="seatTip"></div><h2>' + this.model.settings.title + '</h2><div>';
+
+	var parties = [];
+	parties.push({
+		code : 'ALP',
+		name : 'Labor',
+		seatsWon : this.model.calledCount['ALP'],
+		image : 'anna_bligh.jpg',
+		heading : this.model.settings.labourHeading
+	});
+	parties.push({
+		code : 'LNP',
+		name : 'LNP',
+		seatsWon : this.model.calledCount['LNP'],
+		image : 'campbell_newman.jpg',
+		heading : this.model.settings.liberalHeading
+	});
+	output += '<div class="parties">';
+	for(var i = 0; i < parties.length; i++) {
+		var party = parties[i];
+		output += '<div class="party ' + party.code + '"><img src="' + this.model.assetsURL + 'img/' + party.image + '"/><div class="seats"><h3>' + party.name + ': ' + party.seatsWon.length + '</h3><h4>' + party.heading + '</h4>';
+		var r = party.seatsWon.length - 1;
+		while(r >= 0) {
+
+			var seat = party.seatsWon[r]
+			var id = seat.name.split(' ').join('-')
+			output += '<div class="seat" id="' + id + '"></div>'
+			r--;
+		};
+		output += '</div></div>';
+	};
+	output += '</div>';
+	$(this.domId).html(output);
+	// events
+	var selfRef = this;
+	$(this.domId + ' .parties .party .seat').each(function() {
+		$(this).click(function() {
+			var electorateName = $(this).attr('id').split('-').join(' ')
+			//$(selfRef).trigger(selfRef.ELECTORATE_SELECTED, electorateName);
+			$(selfRef).trigger('switchView', ['electorates', electorateName]);
+		})
+		$(this).mouseover(function() {
+
+			var electorateName = $(this).attr('id').split('-').join(' ')
+			var electorateData = selfRef.model.findElectorateByName(electorateName);
+			var output = '<h3>' + electorateName + '</h3>'
+			$(selfRef.domId + ' .seatTip').html(output)
+			var parentOffset = $('#qldElectionsLive').offset();
+			var offset = $(this).offset();
+			$(selfRef.domId + ' .seatTip').css('left', (offset.left - 40 - parentOffset.left) + 'px')
+			$(selfRef.domId + ' .seatTip').css('top', (offset.top - 80 - parentOffset.top) + 'px')
+			$(selfRef.domId + ' .seatTip').show();
+		})
+		$(this).mouseout(function() {
+			$(selfRef.domId + ' .seatTip').hide();
+		})
+	})
+}
