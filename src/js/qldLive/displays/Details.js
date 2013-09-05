@@ -67,7 +67,7 @@ ndm.australian.qldlive.displays.Details.prototype.build = function() {
 		output += '</td>';
 		output += '<td class="highlight swing-second">';
 		output += (minusWidth) ? '' : swingBar;
-		output += ' <span class="swing-value">' + Math.round( party.swing * 10 ) / 10 + '%</span></td><td>'+seatsAllocation[i].gained.length+'</td><td>'+seatsAllocation[i].lost.length+'</td><td>'+seatsAllocation[i].kept.length+'</td><td  class="highlight"><b>'+(seatsAllocation[i].called.length)+'</b></td></tr>';
+		output += ' <span class="swing-value">' + formatNumber(party.swing) + '%</span></td><td>'+seatsAllocation[i].gained.length+'</td><td>'+seatsAllocation[i].lost.length+'</td><td>'+seatsAllocation[i].kept.length+'</td><td  class="highlight"><b>'+(seatsAllocation[i].called.length)+'</b></td></tr>';
 	};
 	output += '</table>';
 	$(this.domId).html(output);

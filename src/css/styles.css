@@ -24,7 +24,7 @@
 #qldElectionsLive  .latest .topRow {background: #00344a; padding: 15px; border-bottom:1px solid #042a3a;}
 #qldElectionsLive  .latest .bottomRow {background: #0a5371; border-top:1px solid #407990;}
 
-#qldElectionsLive .latest .overview {width:630px; float:left;}
+#qldElectionsLive .latest .overview {width:630px; float:left; background:url(../img/majority-indicator.png) no-repeat 418px 0;}
 #qldElectionsLive .latest .overview h2 {display:none; font-weight: normal; background: #ffffff url('../img/predictionBg.png');font-family: 'Times New Roman',serif;font-size: 16px; color: #004563;text-transform:uppercase; padding: 4px; text-align: center; -webkit-box-shadow: 0px 2px 5px 2px , 1);-moz-box-shadow: 0px 2px 5px 2px , 1);box-shadow: 0px 2px 5px 2px , 1);}
 
 
@@ -36,9 +36,9 @@
 #qldElectionsLive .latest .overview .parties .party .seats-won {display: none;}
 #qldElectionsLive .latest .overview .parties .party .seats h4 {color: #99aeb7; font-size: 11px; font-weight: normal; text-transform: uppercase; margin: 0;line-height: 1;}
 #qldElectionsLive .latest .overview .parties .party .seats .seat {width:4px; height:31px; margin: 4px 2px 0 0; background:#ef5b46; float:left; cursor: pointer}
-#qldElectionsLive .latest .overview .parties .party .seats .seat:hover {background:#ffa396; }
+#qldElectionsLive .latest .overview .parties .party .seats .seat:hover {background:#ffa396 !important; }
 #qldElectionsLive .latest .overview .parties .party.LNP .seats .seat {background:#146eaf; }
-#qldElectionsLive .latest .overview .parties .party.LNP .seats .seat:hover {background:#a1c5df; }
+#qldElectionsLive .latest .overview .parties .party.LNP .seats .seat:hover {background:#99aeb7 !important; }
 #qldElectionsLive .latest .overview .parties .party.GRN img,
 #qldElectionsLive .latest .overview .parties .party.ZZZ img {display:none;}
 #qldElectionsLive .latest .overview .parties .party.GRN .seats,
@@ -53,6 +53,8 @@
 #qldElectionsLive .latest .overview .parties .party.ZZZ .seats .seats-won {display:block; float:left; padding-top: 7px; font-size: 17px;}
 #qldElectionsLive .latest .overview .parties .party.GRN .seats .seat,
 #qldElectionsLive .latest .overview .parties .party.ZZZ .seats .seat {height: 23px;}
+#qldElectionsLive .latest .overview .parties .party.GRN .seats .seat:hover {background:#d2fa83 !important;}
+#qldElectionsLive .latest .overview .parties .party.ZZZ .seats .seat:hover {background:#c8c8c8 !important;}
 
 #qldElectionsLive .latest .overview .seats-left-container {float:left; width: 95%; padding:10px; margin-top:13px; border-radius:3px; box-shadow:inset 0 1px 3px #002a3c; background-color:#003146;}
 #qldElectionsLive .latest .overview .seats-left-container em {float:left; width:61px; margin-right:9px;}
@@ -177,10 +179,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#448eaa', end
 #qldElectionsLive .atAGlance .LNP { text-align: right;}
 #qldElectionsLive .atAGlance .LNP h3 {float:right;}
 #qldElectionsLive .atAGlance .LNP img {float:right; margin: 0 0 0 10px;}
-#qldElectionsLive .atAGlance .partyBar {float:left; width:100px; height:20px; background: #ef5b46; margin: 0px;position: absolute;top: 60px; left: 64px;-webkit-box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);
--moz-box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);
-box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);}
-#qldElectionsLive .atAGlance .partyBar.LNP {margin: 0; background:#146eaf}
+#qldElectionsLive .atAGlance .partyBar {float:left; width:100px; height:24px; background: #ef5b46; margin: 0px;position: absolute;top: 60px; left: 64px;-webkit-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.8);
+-moz-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.8);
+box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.8);}
+#qldElectionsLive .atAGlance .partyBar.LNP {left:auto; right: 63px; margin: 0; background:#146eaf}
 
 
 #qldElectionsLive .liveVideo .topRow {background: #00344a; padding: 0px; border-bottom:1px solid #052c3b; height:440px }
@@ -188,4 +190,6 @@ box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);}
 #qldElectionsLive .liveVideo .bottomRow {background: #0a5371; border-top:1px solid #407990; padding: 15px 110px; padding: 15px 110px;}
 #qldElectionsLive .liveVideo .video {width:650px; float:left;}
 
-
+.ac_results .count,
+.ac_results .search-result-type {display:none;}
+.ac_results ul {max-height: 100px !important;}

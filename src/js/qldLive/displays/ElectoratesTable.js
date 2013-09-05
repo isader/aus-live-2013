@@ -15,7 +15,7 @@ ndm.australian.qldlive.displays.ElectoratesTable = function($domId) {
 	var selfRef = this;
 	$(this.model).unbind(this.model.DISTRICTS_LOADED, true);
 	$(this.model).bind(this.model.DISTRICTS_LOADED, function($event, $data) {
-		selfRef.build();
+		//selfRef.build();
 	});
 	this.model.requestDistricts();
 }

@@ -36,7 +36,7 @@ ndm.australian.qldlive.displays.Overview.prototype.build = function() {
 		seatsWon : this.model.seatsAllocation['ALP'].called,
 		image : 'keven_rudd.jpg',
 		colour: '#ef5b46',
-		lastWon: 'Aston'
+		lastWon: ''
 	});
 	parties.push({
 		code : 'LNP',

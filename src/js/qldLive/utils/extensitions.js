@@ -79,6 +79,16 @@ DateExt.prototype.dateDiiference = function(earlierDate, laterDate) {
 	return oDiff;
 
 }
+DateExt.prototype.formatDateToHours = function (rowDate) {
+	var timestamp = new Date(rowDate),
+		hours = timestamp.getHours() + 1,
+		minutes = timestamp.getMinutes(),
+		ampm = (hours > 12) ? "PM" : "AM";
+
+	hours = (hours > 12) ? hours - 12 : hours;
+
+	return hours + ':' + minutes + ampm;
+};
 var dateExt = new DateExt();
 
 function ColourExt() {
@@ -319,6 +329,100 @@ TableExt.prototype.sortFunc = function(list, column, direction) {
 	}
 }
 var tableExt = new TableExt();
+
+function findState(postcode) {
+	var ranges = {
+		'NSW':[
+			1000, 1999,
+			2000, 2599,
+			2619, 2898,
+			2921, 2999
+		],
+		'ACT':[
+			200, 299,
+			2600, 2618,
+			2900, 2920
+		],
+		'VIC':[
+			3000, 3999,
+			8000, 8999
+		],
+		'QLD':[
+			4000, 4999,
+			9000, 9999
+		],
+		'SA':[
+			5000, 5999
+		],
+		'WA':[
+			6000, 6797,
+			6800, 6999
+		],
+		'TAS':[
+			7000, 7999
+		],
+		'NT':[
+			800, 999
+		]
+	},
+	exceptions = {
+		872: 'NT',
+		2540: 'NSW',
+		2611: 'ACT',
+		2620: 'NSW',
+		3500: 'VIC',
+		3585: 'VIC',
+		3586: 'VIC',
+		3644: 'VIC',
+		3707: 'VIC',
+		2899: 'NSW',
+		6798: 'WA',
+		6799: 'WA',
+		7151: 'TAS'
+	};
+
+	$postcode = parseInt(postcode);
+	if (exceptions[postcode]) {
+		return exceptions[postcode];
+	}
+
+	for(var i in ranges) {
+		c = ranges[i].length;
+		for (var j = 0; j < c; j += 2) {
+			var min = ranges[i][j];
+			var max = ranges[i][j+1];
+			if (postcode >= min && postcode <= max) {
+				return i;
+			}
+		}
+	}
+	return null;
+}
+
+function partyShortCode (name) {
+	switch (name) {
+		case "Labor":
+			return "ALP";
+			break;
+		case "Liberal":
+			return "LP";
+			break;
+		case "The Greens":
+			return "GRN";
+			break;
+		case "": 
+			return "IND";
+			break;
+		default: 
+			return "ZZZ";
+			break;
+	}
+}
+
+function formatNumber (number) {
+	return Math.round( number * 10 ) / 10
+}
+
 
 
 

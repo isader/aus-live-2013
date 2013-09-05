@@ -44,11 +44,19 @@ ndm.australian.qldlive.displays.YourSeat.prototype.showAddView = function() {
 	$(this.domId).addClass('add');
 	$(this.domId).html(output);
 	var selfRef = this;
-	this.autoComplete = $(this.domId + ' input').autocomplete(this.model.searchList).result(function(event, item) {
-		var electorate = item[0]
-		//$(this).val(selfRef.searchMessage);
+
+	this.autoComplete = $(this.domId + ' input').autocomplete(this.model.searchList, {resultsClass: "ac_results small-autocomplete", formatMatch: function (row) {
+		if (row.type === "Electorate") {
+			return row.name;
+		}
+		else if (row.type === "Suburb") {
+			return [row.suburb, row.postcode];
+		}
+	}}).result(function(event, item) {
+		var electorate = item.name;
 		selfRef.showElectorate(electorate);
 	});
+
 	$(this.domId + ' input').focus(function() {
 		if($(this).val() == selfRef.searchMessage) {
 			$(this).val('')
@@ -83,24 +91,84 @@ ndm.australian.qldlive.displays.YourSeat.prototype.showElectorate = function($el
 		
 		var heldByParty = this.model.parties[electorateData.held_by.toUpperCase()]
 
-		var output = '<a class="close" href="javascript:">close</a><h2>' + electorateData.name + '</h2><h4>Held by : <span style="color:' + heldByParty.colour + '">' + electorateData.held_by + '</span></h4>';
+		var output = '<a class="close" href="javascript:">close</a><h2>' + electorateData.name + '</h2>';
+		output += '<h4>Held by : <span style="color:' + heldByParty.colour + '">' + electorateData.held_by + '</span></h4>';
+		//output += '<h4>' + electorateData.percentage + '% counted';
+		//output += ' | Last update: ' + dateExt.formatDateToHours(electorateData.updated) + '</h4>';
+		
 		var calledFor = electorateData.called_for.toUpperCase();
 		if(calledFor != 'NA' && calledFor != '' && calledFor != null && calledFor.length == 3) {
 			var calledForParty = this.model.parties[calledFor]
 			output += '<h3 class="called">Called for : <span style="color:' + calledForParty.colour + '">' + calledFor + '</span></h3>';
 		}
 		output += '<table><thead><tr><th class="candidate_th">Candidate</th><th class="votes_th">% Votes</th><th class="highlight swing_th">Swing</th></tr></thead><tbody>';
-		for(var i = 0; i < electorateData.candidates.length; i++) {
-			var candidate = electorateData.candidates[i];
-			var rowClass = '';
-			if(i == electorateData.candidates.length - 1) {
-				rowClass = 'last'
-			}
-			var colour = this.model.parties[candidate.party].colour
-			var partyCode = (candidate.party.toUpperCase()=='ZZZ') ? 'IND' : candidate.party;
-			output += '<tr class="' + rowClass + '"><td>' + candidate.ballotName + ' (' + partyCode + ')</td><td class="vote"><div class="votePercent" style="width:' + (candidate.primaryVotes.percentage * 50 / 100)  + 'px; background:' + colour + ';"></div> ' + candidate.primaryVotes.percentage + '%</td><td class="highlight">' + candidate.primaryVotes.percentage + '% </td><tr>';
+
+		var orderedCandidates = {
+			"ALP": {},
+			"LP": {},
+			"LNQ": {},
+			"NP": {},
+			"GRN": {},
+			"IND": [],
+			"ZZZ": []
 		};
-		output += '</tbody></table><h3>Votes Counted: '+electorateData.percentage+'%</h3>';
+
+		for(var i = 0; i < electorateData.candidates.length; i++) {
+			var candidate = electorateData.candidates[i],
+				shortCode = partyShortCode(candidate.party);
+
+			candidate.partyCode = shortCode;
+
+			if (shortCode === "IND") {
+				orderedCandidates['IND'].push(candidate);
+			}
+			else if (shortCode === "ZZZ") {
+				orderedCandidates['ZZZ'].push(candidate);
+			}
+			else if (orderedCandidates[shortCode] !== undefined) {
+				orderedCandidates[shortCode] = candidate;
+			}
+			else {
+				
+			}
+		}
+
+		for (var i in orderedCandidates) {
+			var candidate = orderedCandidates[i];
+
+			if (i !== "IND" && i !== "ZZZ" && candidate.hasOwnProperty('name')) {
+				var colour = this.model.parties[partyShortCode(candidate.party)].colour;
+				var partyCode = (candidate.partyCode.toUpperCase()=='ZZZ') ? 'IND' : candidate.party;
+
+				output += '<tr><td>' + candidate.name;
+				output += (partyCode !== '') ? ' (' + partyCode + ')' : '';
+				output += '</td><td class="vote"><div class="votePercent" style="width:' + (candidate.percentage * 50 / 100)  + 'px; background:' + colour + ';"></div> ' + formatNumber(candidate.percentage) + '%</td><td class="highlight">' + candidate.swing + '% </td>';
+				output += '</tr>';
+			}
+			else {
+				if (candidate.hasOwnProperty('name')) {
+					candidate = [candidate];
+				}
+
+				if (candidate.length > 0) {
+					var percentage = 0;
+					var swing = 0;
+
+					for (var j = 0; j < candidate.length; j++) {
+						percentage += candidate[j].percentage;
+						swing += candidate[j].swing;
+					}
+
+					output += '<tr><td>';
+					output += (i === "IND") ? "Independents" : "Other";
+					output += '</td><td class="vote"><div class="votePercent" style="width:' + (percentage * 50 / 100)  + 'px; background:' + colour + ';"></div> ' + formatNumber(percentage) + '%</td><td class="highlight">' + swing + '% </td>';
+					output += '</tr>';
+				}
+			}
+		};
+		//output += '</tbody></table><h3>Votes Counted: '+electorateData.percentage+'%</h3>';
+		output += '</tbody></table><h3>' + electorateData.percentage + '% counted';
+		output += ' | Last update: ' + dateExt.formatDateToHours(electorateData.updated) + '</h3>';
 		$(this.domId).html(output);
 		// events
 		var selfRef = this;

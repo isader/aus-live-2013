@@ -27,13 +27,13 @@ ndm.australian.qldlive.displays.ResultsBar.prototype.build = function() {
 	parties.push({
 		code : 'ALP',
 		name : 'Labor',
-		seatsWon : this.model.calledCount['ALP'].length,
+		seatsWon : this.model.seatsAllocation['ALP'].called.length,
 		image : 'keven_rudd_small.jpg'
 	});
 	parties.push({
 		code : 'LNP',
 		name : 'Coalition',
-		seatsWon : this.model.calledCount['LNP'].length,
+		seatsWon : this.model.seatsAllocation['LNP'].called.length,
 		image : 'tony_abbott_small.jpg'
 	});
 	output += '<div class="parties">';
@@ -43,7 +43,8 @@ ndm.australian.qldlive.displays.ResultsBar.prototype.build = function() {
 
 	};
 	output += '<div class="clear"></div>';
-	var totalWidth = 985 - 220 - 120
+	var totalWidth = 985 - 220 - 130;
+	console.log(totalWidth);
 	var oneSeatWidth = totalWidth / this.model.electorates.length;
 	
 	
@@ -56,7 +57,7 @@ ndm.australian.qldlive.displays.ResultsBar.prototype.build = function() {
 			var leftOverSeats = (this.model.electorates.length - party.seatsWon)
 			
 			if(leftOverSeats > 0) {
-				style += 'left:' + ((leftOverSeats * oneSeatWidth) + 60) + 'px; '
+				//style += 'left:' + ((leftOverSeats * oneSeatWidth) + 60) + 'px; '
 			}
 
 		}

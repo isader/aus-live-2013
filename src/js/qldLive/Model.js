@@ -191,7 +191,7 @@ ndm.australian.qldlive.Model.prototype.requestElectorates = function($refresh) {
 		// the electorates have NOT been loaded OR we wish to refresh them
 		this.electoratesLoading = true;
 		var selfRef = this;
-		var searchTerms = {}
+		var searchTerms = [];
 		$.ajax({
 			url : this.assetsURL + 'json/federal-electorates-live.json',//this.dataAPIURL + 'TAUS_qld_elections_electorates/select',
 			dataType : "json",
@@ -268,32 +268,40 @@ ndm.australian.qldlive.Model.prototype.requestElectorates = function($refresh) {
 					var electorate = selfRef.electorates[i];
 					i--;
 
-					// add electorate name to the search terms
-					if(searchTerms[electorate.name.toProperCase()] == null) {
-						searchTerms[electorate.name.toProperCase()] = $.trim(electorate.name.toProperCase());
-					}
-					// add suburbs of a electorate to the search list
-					var suburbs = electorate.suburbs.split(',');
-					var p = suburbs.length - 1;
-					while(p >= 0) {
 
-						var sub = suburbs[p].toProperCase()
-						if(searchTerms[sub] == null) {
-							searchTerms[sub] = $.trim(sub);
-						}
+
+					var suburbs = electorate.suburbs.split(',');
+					var postCodes = electorate.postcodes.split(', ');
+					var state = findState(postCodes[0]);
+
+					electorate.state = state;
+					searchTerms.push({
+						name: electorate.name.toProperCase(),
+						state: electorate.state.toProperCase(),
+						suburb: "",
+						postcode: "",
+						type: "Electorate"
+					});
+
+					var p = suburbs.length - 1;
+
+					if (suburbs.length !== postCodes.length) {
+						p = (suburbs.length < postCodes.length) ? suburbs.length - 1 : postCodes.length - 1;
+					}
+					while(p >= 0) {
+						var sub = (suburbs[p] !== null) ? suburbs[p].toProperCase() : "";
+						var postcode = (postCodes[p] !== null) ? postCodes[p] : "";
+
+						searchTerms.push({
+							name: electorate.name.toProperCase(),
+							state: electorate.state.toProperCase(),
+							suburb: sub,
+							postcode: postcode,
+							type: "Suburb"
+						});
 						p--;
 					}
-					// add postCodes of a electorate to the search list
-					var postCodes = electorate.postcodes.split(',');
-					var r = postCodes.length - 1;
-					while(r >= 0) {
 
-						var postcode = postCodes[r]
-						if(searchTerms[postcode] == null) {
-							searchTerms[postcode] = postcode
-						}
-						r--;
-					}
 					// Add the seat to the party who won it last election
 					// if Called add to the count for the winning party
 					var calledFor = $.trim(electorate.called_for.toUpperCase());
@@ -312,7 +320,7 @@ ndm.australian.qldlive.Model.prototype.requestElectorates = function($refresh) {
 							});
 						}
 						else {
-							selfRef.seatsAllocation['ZZZ'].held.push({
+							selfRef.seatsAllocation['ZZZ'].called.push({
 								id : electorate.seatCode,
 								name : electorate.name
 							});
@@ -393,8 +401,8 @@ ndm.australian.qldlive.Model.prototype.requestElectorates = function($refresh) {
 					}
 				};
 
-				for(var key in searchTerms) {
-					selfRef.searchList.push(searchTerms[key])
+				for(var c = 0; c < searchTerms.length; c++) {
+					selfRef.searchList.push(searchTerms[c]);
 				}
 
 				$(selfRef).triggerHandler(selfRef.ELECTORATES_LOADED, selfRef.electorates);
@@ -502,7 +510,7 @@ ndm.australian.qldlive.Model.prototype.requestDistricts = function($refresh) {
 		this.districtsLoading = true;
 		var selfRef = this;
 		//var query = 'select districts.district.percentRollCounted,  districts.district.name, districts.district.declaredBallotName, districts.district.declaredPartyCode, districts.district.enrolment, districts.district.formalVotes, districts.district.candidates from xml where url="' + this.settings.liveFeedURL + '"';
-		var url = this.assetsURL + 'http://media.news.com.au/nnd/data/election2013/theauselectionresults.json';//'http://query.yahooapis.com/v1/public/yql?q=' + query + '&format=json';
+		var url = this.assetsURL + 'json/theauselectionresults.json';//'http://media.news.com.au/nnd/data/election2013/theauselectionresults.json';//'http://query.yahooapis.com/v1/public/yql?q=' + query + '&format=json';
 		$.ajax({
 			url : url,
 			dataType : 'jsonp',
@@ -570,6 +578,28 @@ ndm.australian.qldlive.Model.prototype.theAusElectionResults = function($data) {
 	selfRef.parties['ZZZ'].swing = othersSwing;
 
 	$(selfRef).triggerHandler(selfRef.PARTIES_LOADED, selfRef.partiesList);
+
+
+
+	selfRef.districtsLoading = false;
+	selfRef.districts = $data.seats;
+
+	var i = selfRef.electorates.length - 1;
+	while(i >= 0) {
+		var electorate = selfRef.electorates[i];
+		i--;
+
+		var district = selfRef.districts[electorate.seatCode];
+		if (district) {
+			if(district.name.toLowerCase() == electorate.name.toLowerCase()) {
+				electorate.percentage = district.percentage;
+				electorate.swing = district.swing;
+				electorate.updated = district.updated;
+				electorate.candidates = district.candiates;
+			}
+		}
+	}
+	$(selfRef).triggerHandler(selfRef.DISTRICTS_LOADED, selfRef.districts);
 }
 function theAusElectionResults($data) {
 	var model = new ndm.australian.qldlive.Model();
