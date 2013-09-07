@@ -35,14 +35,8 @@ ndm.australian.qldlive.displays.Details.prototype.build = function() {
 	//var time = updatedDateStr.split('T')[1].split(':');;
 	//var updatedDate = new Date(date[0],date[1],date[2],time[0],time[1],time[2])
 	//var dateDifference = dateExt.dateDiiference(updatedDate, new Date());
-	var timestamp = new Date(this.model.electionUpdated),
-		hours = timestamp.getHours() + 1,
-		minutes = timestamp.getMinutes(),
-		ampm = (hours > 12) ? "PM" : "AM";
-
-	hours = (hours > 12) ? hours - 12 : hours;
 	
-	var output = '<h2>DETAILS</h2><h3>' + this.model.electionVotePercentage + '% counted | Last update ' + hours + ':' + minutes + ampm + '</h3>';
+	var output = '<h2>DETAILS</h2><h3>' + this.model.electionVotePercentage + '% counted | Last update ' + dateExt.formatDateToHours(this.model.electionUpdated) + '</h3>';
 	output += '<a href="javascript:" class="btn" id="allLink">View seat by seat results</a>';
 	output += '<table><thead><tr><th>Party</th><th style="width:50px">% Vote</th><th colspan="2" class="highlight" style="width:170px">Swing</th><th>Gained</th><th>Lost</th><th>Held</th><th class="highlight">Total</th></tr></thead>';
  	var parties = this.model.parties;

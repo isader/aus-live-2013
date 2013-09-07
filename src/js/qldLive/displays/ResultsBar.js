@@ -44,7 +44,6 @@ ndm.australian.qldlive.displays.ResultsBar.prototype.build = function() {
 	};
 	output += '<div class="clear"></div>';
 	var totalWidth = 985 - 220 - 130;
-	console.log(totalWidth);
 	var oneSeatWidth = totalWidth / this.model.electorates.length;
 	
 	

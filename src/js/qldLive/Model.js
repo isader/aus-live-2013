@@ -433,7 +433,7 @@ ndm.australian.qldlive.Model.prototype.requestNewsFeed = function($refresh) {
 		// the results have NOT been loaded OR we wish to refresh them
 		this.liveUpdatesLoading = true;
 		var request = 'http://search.twitter.com/search.json?q=';
-		var accounts = this.settings.twitterAccount.split(',');
+		var accounts = this.settings.twitterAccount.split(', ');
 		request += 'from:' + $.trim(accounts[0]);
 		for(var i = 1; i < accounts.length; i++) {
 			request += ' OR from:' + $.trim(accounts[i])
@@ -441,11 +441,10 @@ ndm.australian.qldlive.Model.prototype.requestNewsFeed = function($refresh) {
 		request += '&rpp=35';
 		var selfRef = this;
 		$.ajax({
-
-			url : request, //'https://api.twitter.com/1/lists/statuses.json?slug=qld-election&owner_screen_name=thedailynadia'
+			url : request,
 			dataType : 'jsonp',
 			success : function(data) {
-				
+				console.log(data);
 				selfRef.liveUpdatesLoading = false;
 				selfRef.liveUpdates = data;
 				$(selfRef).triggerHandler(selfRef.NEWS_FEED_LOADED, selfRef.liveUpdates);
@@ -460,46 +459,16 @@ ndm.australian.qldlive.Model.prototype.requestNewsFeed = function($refresh) {
 		});
 	}
 }
-/*
-ndm.australian.qldlive.Model.prototype.requestParties = function($refresh) {
 
-	if(this.partiesLoading) {
-		// the live updates are in the process of loading do nothing
-	} else if(this.partiesList != null && $refresh != true) {
-		// the results HAVE been loaded and we do NOT wish to refresh them
-		$(this).triggerHandler(this.PARTIES_LOADED, this.partiesList);
-	} else {
-
-		// the results have NOT been loaded OR we wish to refresh them
-		this.partiesLoading = true
-		var selfRef = this;
-		var query = 'select parties, generationDateTime from xml where url="' + this.settings.liveFeedURL + '"';
-		var url = this.assetsURL + 'json/parties.json';//'http://query.yahooapis.com/v1/public/yql?q=' + query + '&format=json';
-		$.ajax({
-			url : url,
-			dataType : 'json',
-			success : function(data) {
-				selfRef.partiesList = data.query.results.election.parties.party;
-				selfRef.partiesLoading = true
-				// add party informations
-				for(var i = 0; i < selfRef.partiesList.length; i++) {
-					var party = selfRef.partiesList[i];
-					selfRef.parties[party.code.toUpperCase()].percentage = party.formalVotes.percentage
-					selfRef.parties[party.code.toUpperCase()].count = party.formalVotes.count
-				}
-				$(selfRef).triggerHandler(selfRef.PARTIES_LOADED, selfRef.partiesList);
-				// Reload
-				selfRef.reloadParties = setTimeout(function() {
-					selfRef.requestParties(true)
-				}, selfRef.reloadResultsIn);
-			},
-			error : function(data) {
-				selfRef.loadError('The parties results failed to load')
-			}
-		});
-	}
+ndm.australian.qldlive.Model.prototype.theauselectionTwitter = function($data) {
+	console.log($data);
 }
-*/
+
+function theauselectionTwitter($data) {
+	var model = new ndm.australian.qldlive.Model();
+	model.theauselectionTwitter($data)
+}
+
 ndm.australian.qldlive.Model.prototype.requestDistricts = function($refresh) {
 	if(this.districtsLoading) {
 		// the live updates are in the process of loading do nothing
@@ -510,42 +479,11 @@ ndm.australian.qldlive.Model.prototype.requestDistricts = function($refresh) {
 		this.districtsLoading = true;
 		var selfRef = this;
 		//var query = 'select districts.district.percentRollCounted,  districts.district.name, districts.district.declaredBallotName, districts.district.declaredPartyCode, districts.district.enrolment, districts.district.formalVotes, districts.district.candidates from xml where url="' + this.settings.liveFeedURL + '"';
-		var url = this.assetsURL + 'json/theauselectionresults.json';//'http://media.news.com.au/nnd/data/election2013/theauselectionresults.json';//'http://query.yahooapis.com/v1/public/yql?q=' + query + '&format=json';
+		var url = this.assetsURL + /*'json/theauselectionresults.json';*/'http://media.news.com.au/nnd/data/election2013/theauselectionresults.json';//'http://query.yahooapis.com/v1/public/yql?q=' + query + '&format=json';
 		$.ajax({
 			url : url,
 			dataType : 'jsonp',
 			success : function(data) {
-/*
-				selfRef.districtsLoading = false;
-				selfRef.districts = data.query.results.election
-
-				var i = selfRef.electorates.length - 1;
-				while(i >= 0) {
-					var electorate = selfRef.electorates[i];
-					i--;
-					var d = selfRef.districts.length - 1;
-					while(d >= 0) {
-						var district = selfRef.districts[d].districts.district;
-
-						if(district.name.toLowerCase() == electorate.name.toLowerCase()) {
-							electorate.percentage = district.formalVotes.percentage;
-							electorate.count = district.formalVotes.count;
-							electorate.enrolment = district.enrolment
-							electorate.percentage = district.formalVotes.percentage
-							electorate.candidates = district.candidates.candidate;
-							//electorate.declaredFor
-
-							break;
-						}
-						d--;
-					}
-				}
-				//$(selfRef).triggerHandler(selfRef.DISTRICTS_LOADED, selfRef.districts);
-				// Reload
-				selfRef.reloadDistricts = setTimeout(function() {
-					selfRef.requestParties(true)
-				}, selfRef.requestDistricts);
-*/
 			},
 			error : function(data) {
 				selfRef.loadError('The districts results failed to load')
@@ -558,16 +496,16 @@ ndm.australian.qldlive.Model.prototype.theAusElectionResults = function($data) {
 
 	selfRef.partiesList = $data.parties;
 	selfRef.partiesLoading = true;
-	selfRef.electionUpdated = $data.timestamp;
+	selfRef.electionUpdated = $data.updated;
 	selfRef.electionVotePercentage = $data.percentage;
 	var othersPercentage = 0,
 		othersSwing = 0;
 	// add party informations
 	for(var i = 0; i < selfRef.partiesList.length; i++) {
 		var party = selfRef.partiesList[i];
-		if (selfRef.parties[party.shortCode.toUpperCase()] !== undefined) {
-			selfRef.parties[party.shortCode.toUpperCase()].percentage = party.percentage;
-			selfRef.parties[party.shortCode.toUpperCase()].swing = party.swing;
+		if (selfRef.parties[party.code.toUpperCase()] !== undefined) {
+			selfRef.parties[party.code.toUpperCase()].percentage = party.percentage;
+			selfRef.parties[party.code.toUpperCase()].swing = party.swing;
 		}
 		else {
 			othersPercentage += party.percentage;
@@ -588,14 +526,13 @@ ndm.australian.qldlive.Model.prototype.theAusElectionResults = function($data) {
 	while(i >= 0) {
 		var electorate = selfRef.electorates[i];
 		i--;
-
-		var district = selfRef.districts[electorate.seatCode];
+		var district = findDistrict(electorate.seatCode, selfRef.districts);
 		if (district) {
 			if(district.name.toLowerCase() == electorate.name.toLowerCase()) {
 				electorate.percentage = district.percentage;
 				electorate.swing = district.swing;
 				electorate.updated = district.updated;
-				electorate.candidates = district.candiates;
+				electorate.candidates = district.candidates;
 			}
 		}
 	}

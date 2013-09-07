@@ -86,6 +86,7 @@ DateExt.prototype.formatDateToHours = function (rowDate) {
 		ampm = (hours > 12) ? "PM" : "AM";
 
 	hours = (hours > 12) ? hours - 12 : hours;
+	minutes = (minutes < 10) ? "0" + minutes : minutes;
 
 	return hours + ':' + minutes + ampm;
 };
@@ -399,15 +400,38 @@ function findState(postcode) {
 	return null;
 }
 
+function findDistrict (code, districts) {
+	var i, len;
+	for (i = 0, len = districts.length; i < len; i = i + 1) {
+		if (districts[i].code === code) {
+			return districts[i];
+		}
+	}
+
+	return undefined;
+}
+
 function partyShortCode (name) {
 	switch (name) {
 		case "Labor":
 			return "ALP";
 			break;
+		case "Australian Labor Party":
+			return "ALP";
+			break;
+		case "Country Labor":
+			return "ALP";
+			break;
 		case "Liberal":
 			return "LP";
 			break;
+		case "Liberal National Party of Queensland":
+			return "LNQ";
+			break;
 		case "The Greens":
+			return "GRN";
+			break;
+		case "Australian Greens":
 			return "GRN";
 			break;
 		case "": 

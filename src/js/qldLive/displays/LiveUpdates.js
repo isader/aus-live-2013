@@ -18,9 +18,7 @@ ndm.australian.qldlive.displays.LiveUpdates = function($domId,$disableTwitterBtn
 }
 
 ndm.australian.qldlive.displays.LiveUpdates.prototype.open = function() {
-	
 	if(!this.isBuilt) {
-
 		this.build();
 	}
 	if(this.scrollAPI) {
@@ -30,7 +28,7 @@ ndm.australian.qldlive.displays.LiveUpdates.prototype.open = function() {
 		pane.jScrollPane();
 		this.scrollAPI = pane.data('jsp');
 	}
-	this.model.requestNewsFeed();
+	//this.model.requestNewsFeed();
 
 }
 ndm.australian.qldlive.displays.LiveUpdates.prototype.close = function() {
@@ -45,7 +43,9 @@ ndm.australian.qldlive.displays.LiveUpdates.prototype.build = function() {
 		output += '<a href="https://twitter.com/aus_politics" class="twitter-follow-button" data-show-count="false">Follow @aus_politics</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
 	}
 	
-	output += '<div class="feed"><img src="' + this.model.assetsURL + 'img/ajax-loader.gif"/ class="loadingAni"></div>';
+	//output += '<div class="feed"><img src="' + this.model.assetsURL + 'img/ajax-loader.gif"/ class="loadingAni"></div>';
+
+	output += '<div class="module twitter-module two-tweets"><a class="twitter-timeline"  href="https://twitter.com/australian/politics-2013"  data-widget-id="296468219340931072">Tweets from @australian/politics-2013</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></div>';
 	
 	output += '<a class="btn" href="' + this.model.settings.fullCoverageUrl + '">View all updates on the blog</a>'
 	$(this.domId).html(output);

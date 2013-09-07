@@ -97,8 +97,8 @@ ndm.australian.qldlive.displays.YourSeat.prototype.showElectorate = function($el
 		//output += ' | Last update: ' + dateExt.formatDateToHours(electorateData.updated) + '</h4>';
 		
 		var calledFor = electorateData.called_for.toUpperCase();
-		if(calledFor != 'NA' && calledFor != '' && calledFor != null && calledFor.length == 3) {
-			var calledForParty = this.model.parties[calledFor]
+		if(calledFor != 'NA' && calledFor != '' && calledFor != null) {
+			var calledForParty = (this.model.parties[calledFor] === undefined) ? this.model.parties["ZZZ"] : this.model.parties[calledFor];
 			output += '<h3 class="called">Called for : <span style="color:' + calledForParty.colour + '">' + calledFor + '</span></h3>';
 		}
 		output += '<table><thead><tr><th class="candidate_th">Candidate</th><th class="votes_th">% Votes</th><th class="highlight swing_th">Swing</th></tr></thead><tbody>';
@@ -112,7 +112,6 @@ ndm.australian.qldlive.displays.YourSeat.prototype.showElectorate = function($el
 			"IND": [],
 			"ZZZ": []
 		};
-
 		for(var i = 0; i < electorateData.candidates.length; i++) {
 			var candidate = electorateData.candidates[i],
 				shortCode = partyShortCode(candidate.party);
@@ -140,9 +139,9 @@ ndm.australian.qldlive.displays.YourSeat.prototype.showElectorate = function($el
 				var colour = this.model.parties[partyShortCode(candidate.party)].colour;
 				var partyCode = (candidate.partyCode.toUpperCase()=='ZZZ') ? 'IND' : candidate.party;
 
-				output += '<tr><td>' + candidate.name;
-				output += (partyCode !== '') ? ' (' + partyCode + ')' : '';
-				output += '</td><td class="vote"><div class="votePercent" style="width:' + (candidate.percentage * 50 / 100)  + 'px; background:' + colour + ';"></div> ' + formatNumber(candidate.percentage) + '%</td><td class="highlight">' + candidate.swing + '% </td>';
+				output += '<tr><td><span class="candidatename">' + candidate.name + '</span>';
+				output += (partyCode !== '') ? '<span class="partycode">(' + partyCode + ')</span>' : '';
+				output += '</td><td class="vote"><div class="votePercent" style="width:' + (candidate.percentage * 50 / 100)  + 'px; background:' + colour + ';"></div> ' + formatNumber(candidate.percentage) + '%</td><td class="highlight">' + formatNumber(candidate.swing) + '% </td>';
 				output += '</tr>';
 			}
 			else {
@@ -161,7 +160,7 @@ ndm.australian.qldlive.displays.YourSeat.prototype.showElectorate = function($el
 
 					output += '<tr><td>';
 					output += (i === "IND") ? "Independents" : "Other";
-					output += '</td><td class="vote"><div class="votePercent" style="width:' + (percentage * 50 / 100)  + 'px; background:' + colour + ';"></div> ' + formatNumber(percentage) + '%</td><td class="highlight">' + swing + '% </td>';
+					output += '</td><td class="vote"><div class="votePercent" style="width:' + (percentage * 50 / 100)  + 'px; background:#999;"></div> ' + formatNumber(percentage) + '%</td><td class="highlight">' + formatNumber(swing) + '% </td>';
 					output += '</tr>';
 				}
 			}

@@ -15,7 +15,7 @@ ndm.australian.qldlive.displays.ElectoratesTable = function($domId) {
 	var selfRef = this;
 	$(this.model).unbind(this.model.DISTRICTS_LOADED, true);
 	$(this.model).bind(this.model.DISTRICTS_LOADED, function($event, $data) {
-		//selfRef.build();
+		selfRef.build();
 	});
 	this.model.requestDistricts();
 }
@@ -36,7 +36,7 @@ ndm.australian.qldlive.displays.ElectoratesTable.prototype.close = function() {
  */
 ndm.australian.qldlive.displays.ElectoratesTable.prototype.build = function() {
 
-	var output = '<div class="scrollarea"><table><thead><tr><th id="name" class="sort descending">Electorate<b></b></th><th id="percentage">Counted %<b></b></th><th id="enrolment">Enrolment <b></b></th><th id="held_by">Held by<b></b></th><th id="called_for" class="highlight">Called for<b></b></th></tr></thead><tbody>';
+	var output = '<div class="scrollarea"><table><thead><tr><th id="name" class="sort descending">Electorate<b></b></th><th id="called_for">Called for<b></b></th><th id="percentage">Counted %<b></b></th><th id="swing">Swing<b></b></th><th id="held_by">Held by<b></b></th></tr></thead><tbody>';
 	output += '</tbody></table></div>';
 
 	$(this.domId).html(output);
@@ -87,25 +87,25 @@ ndm.australian.qldlive.displays.ElectoratesTable.prototype.buildResults = functi
 	electorates.sort(tableExt.sortFunc(electorates, this.sortOn, this.sortDirection));
 	for(var i = 0; i < electorates.length; i++) {
 		var electorate = electorates[i];
-		var heldByParty = this.model.parties[electorate.held_by.toUpperCase()];
-		var calledForText = '';
-		var calledForColor = '#fff';
-		var calledFor = electorate.called_for;
-		if(calledFor != 'NA' && calledFor != '' && calledFor != null && calledFor.length == 3) {
-			var calledForParty = this.model.parties[calledFor];
-			calledForText = (calledFor.toUpperCase()=='ZZZ') ? 'IND' : calledFor;
-			calledForColor = calledForParty.colour;
-		}
+		var heldByParty = (this.model.parties[electorate.held_by.toUpperCase()] === undefined) ? this.model.parties["ZZZ"] : this.model.parties[electorate.held_by.toUpperCase()];
 		var heldByPartyText = (electorate.held_by.toUpperCase()=='ZZZ') ? 'IND' : electorate.held_by.toUpperCase();
-		var id = electorate.name.split(' ').join('-')
-		
-		output += '<tr id="' + id + '"><td>' + electorate.name + '</td><td>' + electorate.percentage + '%</td><td>' + electorate.enrolment + '</td><td><span style="color:' + heldByParty.colour + '">' +heldByPartyText + '</span></td><td><span style="color:' + calledForColor + '">' + calledForText + '</span></td></tr>';
+
+		var calledForText = '';
+		var calledForColor = '#666';
+		var calledFor = electorate.called_for;
+		if(calledFor != 'NA' && calledFor !== '' && calledFor != null) {
+			var calledForParty = (this.model.parties[calledFor] === undefined) ? this.model.parties["ZZZ"]: this.model.parties[calledFor];
+			calledForText = (calledFor.toUpperCase()=='ZZZ') ? 'IND' : calledFor;
+			calledForColor = (calledForParty.colour === undefined) ? "#999" : calledForParty.colour;
+		}
+		var id = electorate.name.split(' ').join('-');
+		output += '<tr id="' + id + '"><td>' + electorate.name + '</td><td><span style="color:' + calledForColor + '">' + calledForText + '</span></td><td class="alignright"><div class="votePercent" style="width:' + (electorate.percentage * 100 / 100)  + 'px; background:' + calledForColor + ';"></div> ' + electorate.percentage + '</td><td>' + electorate.swing + '</td><td><span style="color:' + heldByParty.colour + '">' +heldByPartyText + '</span></td></tr>';
 	}
 	$(this.domId + ' table tbody').html(output)
 	var selfRef = this;
 	$(this.domId + ' table tbody tr').each(function() {
 		$(this).click(function() {
-			var electorateName = $(this).attr('id').split('-').join(' ')
+			var electorateName = $(this).attr('id').split('-').join(' ');
 			$(selfRef).trigger(selfRef.ELECTORATE_SELECTED, electorateName);
 		})
 	})

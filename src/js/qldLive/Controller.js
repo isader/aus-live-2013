@@ -75,7 +75,7 @@ ndm.australian.qldlive.Controller.prototype.build = function() {
 			// add a menu link if the video is enabled
 			output += '<li id="' + this.LIVEVIDEO + '"><b>Sky News</b>Live</li>';
 		}
-		output += '</ul><div class="share"></div><div class="contents"><div class="latestView"></div><div class="electoratesView"></div><div class="videoView"></div></div>';
+		output += '</ul><div class="share"></div><div class="contents"><div class="tab-content latestView"></div><div class="tab-content electoratesView"></div><div class="tab-content videoView"></div></div>';
 		$(this.domId).append(output);
 		// Add Share Btns
 		/**
@@ -144,7 +144,6 @@ ndm.australian.qldlive.Controller.prototype.switchView = function($view, $data) 
 		switch($view) {
 			case this.LATEST :
 				this.currentPageView = this.latestView
-
 				break;
 			case this.ELECTORATES :
 				this.currentPageView = this.electoratesView;
